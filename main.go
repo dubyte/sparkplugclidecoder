@@ -51,6 +51,10 @@ func main() {
 		var payload sparkplug.Payload
 		hexstr := scanner.Bytes()
 
+		if len(hexstr) == 0 {
+			return
+		}
+
 		payloadBin := make([]byte, hex.DecodedLen(len(hexstr)))
 		n, err := hex.Decode(payloadBin, hexstr)
 		if err != nil {
