@@ -32,7 +32,7 @@ import (
 )
 
 var (
-	sep    = kingpin.Flag("sep", "to separate the messages currently: msg<newline>sep<newline>").Default("--").Short('s').String()
+	sep    = kingpin.Flag("sep", "adds a separator between messages: <newline>sep<newline>").Default("").Short('s').String()
 	format = kingpin.Flag("format", "Output format: prototext, protojson").Default("prototext").Short('f').String()
 )
 
@@ -76,8 +76,11 @@ func main() {
 			log.Fatalf("unknown format: %s", err)
 		}
 
-		fmt.Printf("%s\n%s\n", out, *sep)
+		fmt.Printf("%s", out)
 
+		if *sep != "" {
+			fmt.Printf("\n%s\n", *sep)
+		}
 	}
 
 }
