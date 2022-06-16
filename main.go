@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/dubyte/sparkplugclidecoder/internal/sparkplug"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -32,14 +33,19 @@ import (
 )
 
 var (
-	sep    = kingpin.Flag("sep", "adds a separator between messages: <newline>sep<newline>").Default("").Short('s').String()
-	format = kingpin.Flag("format", "Output format: prototext, protojson").Default("prototext").Short('f').String()
+	sep           = kingpin.Flag("sep", "adds a separator between messages: <newline>sep<newline>").Default("").Short('s').String()
+	format        = kingpin.Flag("format", "Output format: prototext, protojson").Default("prototext").Short('f').String()
+	maxBufferSize = kingpin.Flag("maxBufferSize", "size of the buffer").Default(strconv.Itoa(bufio.MaxScanTokenSize)).Short('t').Int()
 )
+
+const startBufSize = 4096
 
 //go:generate protoc --go_out=. --proto_path=./internal/sparkplug sparkplug.proto
 func main() {
 	kingpin.Parse()
+	newBuf := make([]byte, startBufSize)
 	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Buffer(newBuf, *maxBufferSize)
 
 	defer func() {
 		if err := scanner.Err(); err != nil {

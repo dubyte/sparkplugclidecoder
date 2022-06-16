@@ -10,9 +10,10 @@ hexadecimal format. Currently only tested with mosquitto_sub
 usage: sparkplugclidecoder [<flags>]
 
 Flags:
---help                 Show context-sensitive help (also try --help-long and --help-man).
--s, --sep=""           adds a separator between messages: <newline>sep<newline>
--f, --format="prototext"  Output format: prototext, protojson
+      --help                 Show context-sensitive help (also try --help-long and --help-man).
+  -s, --sep=""               adds a separator between messages: <newline>sep<newline>
+  -f, --format="prototext"   Output format: prototext, protojson
+  -t, --maxBufferSize=65536  size of the buffer
 ```
 
 ## Examples
